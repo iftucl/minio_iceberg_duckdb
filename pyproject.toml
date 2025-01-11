@@ -1,0 +1,17 @@
+[tool.poetry]
+name = "pyiceberg-minio"
+version = "0.1.0"
+description = "\"A PoC based on Apache Iceberg & Minio\""
+authors = ["uceslc0 <uceslc0@ucl.ac.uk>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+pyiceberg = {extras = ["duckdb"], version = "^0.8.1"}
+pyarrow = "^18.1.0"
+pandas = "^2.2.3"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
