@@ -10,6 +10,16 @@ python = "^3.10"
 pyiceberg = {extras = ["duckdb"], version = "^0.8.1"}
 pyarrow = "^18.1.0"
 pandas = "^2.2.3"
+uvicorn = "^0.34.0"
+fastapi = "^0.115.6"
+pydantic = {extras = ["email"], version = "^2.10.5"}
+python-jose = "^3.3.0"
+motor = "^3.6.0"
+passlib = "^1.7.4"
+bcrypt = "^4.2.1"
+cryptography = "^44.0.0"
+itsdangerous = "^2.2.0"
+python-multipart = "^0.0.20"
 
 
 [build-system]

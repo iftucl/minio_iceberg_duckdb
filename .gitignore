@@ -6,7 +6,7 @@ __pycache__/
 *.lock
 # C extensions
 *.so
-
+test_async_func.py
 # Distribution / packaging
 .Python
 build/

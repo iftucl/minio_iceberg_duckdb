@@ -1,5 +1,14 @@
 # PYICEBERG, DUCKDB & MINIO PoC
 
+## USE CASE
+
+Post-Trade Venue XYZ has set up an API where the trading members can submit trades against each other. These trades feeds to the trading venue real time and are then aggregated intra-day and end of the day in order to obtain the net exposure by trading participants.
+
+As trading participants can buy and sell, take long and short positions their overall exposure to the trading venue XYZ can fluctuate intra-day leading to positions of different size and different directions.
+
+
+## FULL STACK
+
 This handout provides an overview of three key technologies in modern data lake architecture: MinIO, Apache Iceberg, and DuckDB with PyIceberg.
 
 ## MinIO
