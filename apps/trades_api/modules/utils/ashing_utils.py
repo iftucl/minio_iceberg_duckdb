@@ -40,7 +40,7 @@ class HashingTool:
     Hashes data provided using key and salt.
     """
 
-    def __init__(self, key: str, salt: str, data: str):
+    def __init__(self, data: str, key: str = HASH_KEY, salt: str = HASH_SALT):
         """
         Constructor.
 
@@ -72,6 +72,9 @@ class HashingTool:
 
 
 
-def password_hashing(plain_text: str):
+def password_hashing(plain_text: str) -> str:
+    """
+    Return hashed password.
+    """
     hash_object = HashingTool(key=HASH_KEY, salt=HASH_SALT, data=plain_text)
     return hash_object.hashed

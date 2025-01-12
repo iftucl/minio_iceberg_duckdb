@@ -7,6 +7,7 @@ from starlette.middleware.sessions import SessionMiddleware
 
 
 #from modules.auth_module.middleware_helper import CustomAuthBackend, CheckPermissionsMiddleware
+from modules.middleware_helper.auth_middleware import CustomAuthMiddleware
 from modules.auth_routes import auth_router
 from modules.routes import trades_router
 
@@ -18,7 +19,7 @@ def get_application():
                   middleware=[
                       Middleware(TrustedHostMiddleware, allowed_hosts=["*"]),
                       Middleware(SessionMiddleware, secret_key="your-secret-key"),
-                      #Middleware(AuthenticationMiddleware, backend=CustomAuthBackend()),
+                      Middleware(AuthenticationMiddleware, backend=CustomAuthMiddleware()),
                       #Middleware(CheckPermissionsMiddleware),
                       ]
                 )    

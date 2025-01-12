@@ -6,6 +6,7 @@ from jose import JWTError, jwt
 from datetime import datetime, timedelta
 from modules.api_models import CreateUserRequest
 from modules.utils.mongo_connect import create_user
+from modules.utils.auth_ashing import authenticate_user, create_token
 
 router = APIRouter()
 
@@ -24,10 +25,6 @@ async def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends(
                                                                                   "acknowledged": create_response.acknowledged}))
 
 @router.post("/token")
-async def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends()):
-    # Validate user credentials here
-    if form_data.username != "testuser" or form_data.password != "testpassword":
-        raise HTTPException(status_code=400, detail="Incorrect username or password")
-    
-    access_token = create_access_token(data={"sub": form_data.username})
+async def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends(authenticate_user)):
+    access_token = create_token(data=form_data)
     return {"access_token": access_token, "token_type": "bearer"}
