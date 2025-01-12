@@ -12,15 +12,15 @@ from modules.utils.auth_ashing import get_user_from_token
 class CustomAuthMiddleware(AuthenticationBackend):
     async def authenticate(self, request):
         try:
-            if request.url.path in ["/token", "/login", "/signup", "/docs"]:
+            print("HERE")
+            if request.url.path.startswith("/docs") or request.url.path.startswith("/openapi.json") or request.url.path in ["/token", "/login", "/signup"]:
                 return None
             token = request.headers.get("Authorization")
             if not token:
                 raise HTTPException(status_code=401, detail="Missing authentication token")            
             try:
                 token = token.split("Bearer ")[1]
-                payload = get_user_from_token(token=token)
-                print(payload)
+                payload = get_user_from_token(token=token)                
                 if payload.username is None:
                     raise HTTPException(status_code=401, detail="Invalid authentication token")
                 if payload.token_expiry < datetime.now():
