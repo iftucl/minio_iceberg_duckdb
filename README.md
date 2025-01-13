@@ -9,10 +9,27 @@
 
 ## USE CASE
 
-Post-Trade Venue XYZ has set up an API where the trading members can submit trades against each other. These trades feeds to the trading venue real time and are then aggregated intra-day and end of the day in order to obtain the net exposure by trading participants.
 
-As trading participants can buy and sell, take long and short positions their overall exposure to the trading venue XYZ can fluctuate intra-day leading to positions of different size and different directions.
+Post-Trade Venue XYZ has implemented an API that allows trading members to submit trades in real-time. These trades are immediately fed into the trading venue's system and are aggregated both intra-day and at the end of the day to calculate net exposures for each trading participant.
 
+Trading participants can engage in both buying and selling activities, resulting in long and short positions. Consequently, their overall exposure to Trading Venue XYZ can fluctuate significantly throughout the day, leading to positions of varying sizes and directions.
+
+To effectively manage risk and operations, it's crucial to monitor these positions at both granular and aggregated levels. This monitoring enables the computation of key business, risk, and operational metrics.
+To address these requirements, the Tech and Quant team has designed a sophisticated infrastructure with the following components:
+
+- FastAPI API: Serves as the entry point for trade submissions to Post-Trade Venue XYZ.
+- MongoDB: Stores individual trade transactions at a granular level, providing a comprehensive backlog of all trades. MongoDB's time series collections are particularly well-suited for this purpose, offering efficient storage and querying of time-based data.
+- MinIO Data Lake: Hosts a flexible and scalable object storage solution, ideal for storing large volumes of trade data.
+- Apache Iceberg: Utilized for efficient data organization and aggregation within the MinIO data lake. It allows for daily aggregation of trades, leveraging its advanced partitioning and metadata management capabilities.
+
+Data Flow:
+- Trades are submitted via the FastAPI API.
+- Raw trade data is stored in MongoDB for long-term persistence.
+- Data is also sent to the MinIO data lake.
+- Apache Iceberg is used to aggregate trades on a daily basis within the data lake.
+- Aggregated results are stored back in MongoDB for quick access and analysis.
+
+It's important to note that while MongoDB serves as the long-term persistent storage for both raw and aggregated data, the MinIO data lake and Apache Iceberg handle non-persistent data primarily for efficient compression and aggregation purposes. This approach allows for fast and flexible data processing while maintaining a comprehensive historical record of all transactions.
 
 ## FULL STACK
 
@@ -60,14 +77,14 @@ Iceberg has largely replaced Hive in modern object storage-based data lakes for 
 
 ## DuckDB & PyIceberg
 
-DuckDB is an in-process SQL OLAP database management system, designed for fast analytical queries on local datasets6.
+DuckDB is an in-process SQL OLAP database management system, designed for fast analytical queries on local datasets.
 
 Using DuckDB in combination with PyIceberg offers several advantages for aggregating large volumes of data:
 
-- Local querying: DuckDB allows for running queries locally on Iceberg tables, reducing the need for expensive cloud compute resources3.
-- Efficient data loading: PyIceberg can efficiently scan Iceberg tables and load only the necessary data into DuckDB for processing3.
-- SQL interface: DuckDB provides a familiar SQL interface for querying data loaded from Iceberg tables3.
-- Performance optimization: DuckDB can materialize tables in memory for improved query performance on large datasets6.
+- Local querying: DuckDB allows for running queries locally on Iceberg tables, reducing the need for expensive cloud compute resources.
+- Efficient data loading: PyIceberg can efficiently scan Iceberg tables and load only the necessary data into DuckDB for processing.
+- SQL interface: DuckDB provides a familiar SQL interface for querying data loaded from Iceberg tables.
+- Performance optimization: DuckDB can materialize tables in memory for improved query performance on large datasets.
 
 
 By combining these technologies, data engineers and analysts can build efficient, scalable data lake solutions that leverage the strengths of object storage, modern table formats, and fast local query engines8.
