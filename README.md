@@ -95,6 +95,6 @@ To launch the services needs to test this orchestration, it requires the user to
 
 ```bash
 
-docker compose up --build -d pythonice
+docker compose up --build -d python_ice
 
 ```

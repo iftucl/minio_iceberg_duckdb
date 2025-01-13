@@ -3,24 +3,30 @@ version: '3.5'
 services:
     mongodb_ice:
       container_name: mongodb_ice
+      networks:
+        iceberg_net:
       image: mongo:latest
       ports:
         - 27018:27017
-    minio_ice:
+    minioice:
       image: minio/minio
-      container_name: minio_ice
+      container_name: minioice
+      networks:
+        iceberg_net:
       environment:
         - MINIO_ROOT_USER=ift_bigdata
         - MINIO_ROOT_PASSWORD=minio_password
-        - MINIO_DOMAIN=minio_ice
+        - MINIO_DOMAIN=minioice
       ports:
         - 9001:9001
         - 9000:9000
       command: ["server", "/data", "--console-address", ":9001"]
-    minio_client:
-      container_name: minio_client
+    minio_client_ice:
+      container_name: minio_client_ice
+      networks:
+        iceberg_net:
       depends_on:
-        - minio_ice
+        - minioice
       image: minio/mc
       environment:
         - AWS_ACCESS_KEY_ID=ift_bigdata
@@ -28,7 +34,7 @@ services:
         - AWS_REGION=us-east-1
       entrypoint: >
         /bin/bash -c "
-        until (/usr/bin/mc config host add minio http://minio_ice:9000 ift_bigdata minio_password) do echo '...waiting...' && sleep 1; done;
+        until (/usr/bin/mc config host add minio http://minioice:9000 ift_bigdata minio_password) do echo '...waiting...' && sleep 1; done;
         sleep 10 && /usr/bin/mc rm -r --force minio/icebergwarehouse;
         sleep 10 && /usr/bin/mc mb minio/icebergwarehouse;
         mc anonymous set public minio/icebergwarehouse;
@@ -36,6 +42,8 @@ services:
         "      
     iceberg_rest_ice:
       container_name: iceberg_rest_ice
+      networks:
+        iceberg_net:
       image: tabulario/iceberg-rest
       ports:
         - "8181:8181"
@@ -46,11 +54,13 @@ services:
         - CATALOG_S3_PATH__STYLE__ACCESS=true
         - CATALOG_WAREHOUSE=s3://icebergwarehouse/
         - CATALOG_IO__IMPL=org.apache.iceberg.aws.s3.S3FileIO
-        - CATALOG_S3_ENDPOINT=http://minio_ice:9000
+        - CATALOG_S3_ENDPOINT=http://minioice:9000
       depends_on:
-        - minio_ice
-    pythonice:
-      container_name: pythonice
+        - minioice
+    python_ice:
+      container_name: python_ice
+      networks:
+        iceberg_net:
       build: 
         context: ./
         dockerfile: ./apps/Dockerfile
@@ -58,7 +68,7 @@ services:
         - 8010:8010
       depends_on:
         - mongodb_ice
-        - minio_ice
+        - minioice
         - iceberg_rest_ice
       volumes:
         - type: bind
@@ -66,5 +76,4 @@ services:
           target: /home/minio_iceberg_duckdb
 
 networks:
-  proxynet:
-    name: database_network
+  iceberg_net:
