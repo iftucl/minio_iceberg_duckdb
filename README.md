@@ -1,3 +1,10 @@
+<p align="center">
+    <a href=""><img src="./www/img/LOGO_PDMPOC_BANNER.png" alt="PDMBanner-BigData-IFT"></a>
+</p>
+<p align="center">
+    <em>Trade Aggregator PoC</em>
+</p>
+
 # PYICEBERG, DUCKDB & MINIO PoC
 
 ## USE CASE
@@ -8,6 +15,14 @@ As trading participants can buy and sell, take long and short positions their ov
 
 
 ## FULL STACK
+
+<p align="center">
+    <a href=""><img src="./www/img/iceberg_minio_duckdb.png" alt="PDMPOC-BigData-IFT"></a>
+</p>
+<p align="center">
+    <em>Full Stack Flow Schema</em>
+</p>
+
 
 This handout provides an overview of three key technologies in modern data lake architecture: MinIO, Apache Iceberg, and DuckDB with PyIceberg.
 
