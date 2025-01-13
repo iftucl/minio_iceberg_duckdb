@@ -1,5 +1,6 @@
 from typing import Optional, Literal
-from pydantic import BaseModel, Field, validator
+from pydantic import BaseModel, Field, field_validator
+
 import datetime
 
 
@@ -18,12 +19,14 @@ class RequestTradeSubmit(BaseModel):
      class Config:
         validate_assignment = True
 
-     @validator("DateTime", pre=True, always=True)
+     @field_validator("DateTime", mode="before")
+     @classmethod
      def set_datetime_utcnow(cls, v):
-          return datetime.datetime.now()
+           return datetime.datetime.now()
      
-     @validator("TradeId", pre=True, always=True)
+     @field_validator("TradeId", mode="after")
+     @classmethod
      def set_trade_id(cls, v, values):
-          trisn = values.get('TradeType') + values.get('Trader') + values.get('ISIN') + values.get('DateTime').strftime('%Y%m%d%H%M%S')                
+          trisn = values.get("TradeType") + values.get("Trader") + values.get("ISIN") + values.get("DateTime").strftime("%Y%m%d%H%M%S")                
           return str(trisn)
 

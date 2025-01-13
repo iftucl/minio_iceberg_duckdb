@@ -43,7 +43,7 @@ It's important to note that while MongoDB serves as the long-term persistent sto
 
 This handout provides an overview of three key technologies in modern data lake architecture: MinIO, Apache Iceberg, and DuckDB with PyIceberg.
 
-## MinIO
+### MinIO
 
 MinIO is a high-performance, cloud-native object storage system designed for scalability and efficiency7. It offers a unified storage solution for modern data lakes that can run anywhere, including private clouds, public clouds, and bare metal environments.
 
@@ -59,7 +59,7 @@ As an object storage solution for Iceberg, MinIO offers several advantages:
 - **Efficient** handling of small files, which is crucial for Iceberg's transaction logs and metadata files.
 - **Compatibility** with cloud object stores like Amazon S3, allowing for seamless integration with existing cloud infrastructure.
 
-## Apache Iceberg
+### Apache Iceberg
 
 Apache Iceberg is an open-source table format for large analytic datasets, designed to improve upon older systems like Hive.
 
@@ -75,7 +75,7 @@ Iceberg has largely replaced Hive in modern object storage-based data lakes for 
 - Improved data consistency: Iceberg's file-level tracking prevents issues with missing data that can occur with Hive's folder-level approach.
 - More efficient partitioning: Iceberg uses a more granular partition strategy, allowing for faster query performance.
 
-## DuckDB & PyIceberg
+### DuckDB & PyIceberg
 
 DuckDB is an in-process SQL OLAP database management system, designed for fast analytical queries on local datasets.
 
@@ -87,4 +87,14 @@ Using DuckDB in combination with PyIceberg offers several advantages for aggrega
 - Performance optimization: DuckDB can materialize tables in memory for improved query performance on large datasets.
 
 
-By combining these technologies, data engineers and analysts can build efficient, scalable data lake solutions that leverage the strengths of object storage, modern table formats, and fast local query engines8.
+By combining these technologies, data engineers and analysts can build efficient, scalable data lake solutions that leverage the strengths of object storage, modern table formats, and fast local query engines.
+
+## APPLICATION LAUNCH
+
+To launch the services needs to test this orchestration, it requires the user to cd in this git repository and run from the command line:
+
+```bash
+
+docker compose up --build -d pythonice
+
+```
