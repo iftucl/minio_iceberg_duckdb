@@ -66,6 +66,8 @@ services:
         dockerfile: ./apps/Dockerfile
       ports:
         - 8010:8010
+      environment:
+        - ENV_TYPE=DOCKER_DEV
       depends_on:
         - mongodb_ice
         - minioice

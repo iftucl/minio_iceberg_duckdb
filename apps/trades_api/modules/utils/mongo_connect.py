@@ -24,7 +24,7 @@ async def get_user(user: str) -> dict:
         >>> loop = asyncio.get_event_loop()
         >>> loop.run_until_complete(get_user(user="foo"))
     """
-    client = AsyncIOMotorClient("localhost:27018")
+    client = AsyncIOMotorClient(os.getenv("MONGODB_URL"))
     db = client.Users
 
     document = await db['TradeUsers'].find_one({'username': user})
@@ -49,7 +49,7 @@ async def create_user(new_user: CreateUserRequest) -> dict:
     if check_user:
         raise HTTPException(status_code=409, detail="Resource already exists")
 
-    client = AsyncIOMotorClient("localhost:27018")
+    client = AsyncIOMotorClient(os.getenv("MONGODB_URL"))
     db = client.Users
     load_data = await db["TradeUsers"].insert_one(new_user.model_dump())
     return load_data
