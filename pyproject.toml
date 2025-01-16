@@ -21,6 +21,7 @@ bcrypt = "^4.2.1"
 cryptography = "^44.0.0"
 itsdangerous = "^2.2.0"
 python-multipart = "^0.0.20"
+ift-global = {git = "https://github.com/iftucl/ift_global.git"}
 
 
 [build-system]

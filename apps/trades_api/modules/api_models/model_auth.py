@@ -6,6 +6,7 @@ from pydantic import (
     Field,
     EmailStr, 
     field_validator,
+    ConfigDict,
 )
 
 from modules.utils.ashing_utils import password_hashing
@@ -50,12 +51,12 @@ class TraderAuthToken(MongoTraderUser):
 
 
 class CreateUserRequest(MongoTraderUser):
-    class Config:
-        schema_extra = {
-            'examples': {
-                'description': 'Create username and password'
-            }
-        }
+    model_config = ConfigDict(
+        title="CreateUserRequest",
+        json_schema_extra = {
+            "description": "Create username and password"
+            
+        })
 
     @field_validator('password', mode='before')
     @classmethod
