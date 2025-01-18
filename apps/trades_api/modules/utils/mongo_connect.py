@@ -53,3 +53,16 @@ async def create_user(new_user: CreateUserRequest) -> dict:
     db = client.Users
     load_data = await db["TradeUsers"].insert_one(new_user.model_dump())
     return load_data
+
+
+async def load_trade(trade_data):
+    client = AsyncIOMotorClient(os.environ['MONGODB_URL'])
+    db = client.Trades
+
+    trade=trade_data.dict()
+    
+    new_trade = await db["TradingRecord"].insert_one(trade)
+    
+    created_trade = await db["TradingRecord"].find_one({"_id": new_trade.inserted_id}, {'_id': 0})
+    
+    return created_trade

@@ -28,13 +28,13 @@ class CustomAuthMiddleware(AuthenticationBackend):
             except JWTError:
                 raise HTTPException(status_code=401, detail="Invalid authentication token")
         except Exception as exc:
-            local_logger.error(f"Error as : {exc}")
+            local_logger.error(f"Error as : {exc}. returning forbidden")
             return JSONResponse(status_code=status.HTTP_403_FORBIDDEN, content="Forbidden Middleware Auth")
         
         return AuthCredentials(scopes="admin"), SimpleUser(payload.username)
     
 class CheckPermissionsMiddleware(BaseHTTPMiddleware):
-    async def dispatch(self, request, call_next):
+    async def dispatch(self, request, call_next):        
         try:
             if isinstance(request.user, UnauthenticatedUser):
                 return JSONResponse(status_code=status.HTTP_403_FORBIDDEN)

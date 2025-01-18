@@ -13,7 +13,7 @@ def is_user(request: Request):
     token = token.split("Bearer ")[1]
     payload = get_user_from_token(token=token)    
     #user = [y for x, y in request.headers.items() if x == "X-Trader-User"]
-    group = "admin" #[y for x, y in request.headers.items() if x == "X-Trader-Groups"]
+    group = "admin" #[y for x, y in request.headers.items() if x == "X-Trader-Groups"]    
     if not payload.username:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED)
     return TraderUser(trader_user=payload.username, trader_group=group)
