@@ -24,6 +24,8 @@ and when the containers are available, we can start the api with:
 
 
 ```bash
+
 cd ./apps/trades_api
 poetry run uvicorn main:app --workers 8 --port 8010 --host 0.0.0.0
+
 ```

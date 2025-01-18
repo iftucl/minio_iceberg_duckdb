@@ -9,6 +9,8 @@ from pydantic import (
     ConfigDict,
 )
 
+from modules.utils.api_logger import local_logger
+
 from modules.utils.ashing_utils import password_hashing
 
 class MongoTraderUser(BaseModel):
@@ -31,8 +33,6 @@ class TraderAuthRequest(MongoTraderUser):
     def set_password(cls, v: str) -> str:        
         return password_hashing(v)
 
-
-
 class TraderAuthToken(MongoTraderUser):    
     token_expiry: Optional[Union[datetime, str]] = Field(description="JWT Token expiry time")
 
@@ -41,9 +41,9 @@ class TraderAuthToken(MongoTraderUser):
     def set_password(cls, v: str) -> str:
         if isinstance(v, str):
             try:
-                return datetime.strptime(v, "%Y-%m-%d %H-%M-%S.%f")
+                return datetime.strptime(v, "%Y-%m-%dT%H:%M:%S.%f")
             except ValueError as ver:
-                print(f"Could not convert JWT Token Expiry to datetime from str: {ver}")
+                local_logger.error(f"Could not convert JWT Token Expiry to datetime from str: {ver}")
                 raise
         if isinstance(v, datetime):
             return v

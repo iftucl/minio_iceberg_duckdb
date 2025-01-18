@@ -6,21 +6,21 @@ from starlette.middleware.base import BaseHTTPMiddleware
 from starlette.middleware.sessions import SessionMiddleware
 from jose import JWTError
 from datetime import datetime
-from modules.utils.auth_ashing import get_user_from_token
 
+from modules.utils.auth_ashing import get_user_from_token
+from modules.utils.api_logger import local_logger
 
 class CustomAuthMiddleware(AuthenticationBackend):
     async def authenticate(self, request):
         try:
-            print("HERE")
             if request.url.path.startswith("/docs") or request.url.path.startswith("/openapi.json") or request.url.path in ["/token", "/login", "/signup"]:
                 return None
-            token = request.headers.get("Authorization")
+            token = request.headers.get("authorization")
             if not token:
                 raise HTTPException(status_code=401, detail="Missing authentication token")            
             try:
                 token = token.split("Bearer ")[1]
-                payload = get_user_from_token(token=token)                
+                payload = get_user_from_token(token=token)
                 if payload.username is None:
                     raise HTTPException(status_code=401, detail="Invalid authentication token")
                 if payload.token_expiry < datetime.now():
@@ -28,7 +28,7 @@ class CustomAuthMiddleware(AuthenticationBackend):
             except JWTError:
                 raise HTTPException(status_code=401, detail="Invalid authentication token")
         except Exception as exc:
-            print(f"Error as : {exc}")
+            local_logger.error(f"Error as : {exc}")
             return JSONResponse(status_code=status.HTTP_403_FORBIDDEN, content="Forbidden Middleware Auth")
         
         return AuthCredentials(scopes="admin"), SimpleUser(payload.username)

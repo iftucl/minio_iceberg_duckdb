@@ -67,6 +67,8 @@ services:
       ports:
         - 8010:8010
       environment:
+        - MINIO_ROOT_USER=ift_bigdata
+        - MINIO_ROOT_PASSWORD=minio_password      
         - ENV_TYPE=DOCKER_DEV
       depends_on:
         - mongodb_ice

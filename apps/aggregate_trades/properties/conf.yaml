@@ -1,0 +1,6 @@
+local:
+  mongodb_url: "localhost:27018"
+  minio_url: "localhost:9000"
+dev:
+  mongodb_url: "mongodb_ice:27017"
+  minio_url: "minioice:9000"
